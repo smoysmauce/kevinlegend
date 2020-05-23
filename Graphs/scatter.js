@@ -26,29 +26,24 @@ function HappinessArray(csvData){
         if (factor === "Rank") {
             chosenFactor = yearCsvData.map((row) => +row.Rank);
             rangeTop = 0;
-            rangeTop = 1.1*Math.max(...chosenFactor);
-        }
-        else if (factor === "GDP") {
+            rangeBot = 1.1*Math.max(...chosenFactor);
+        } else if (factor === "GDP") {
             chosenFactor = yearCsvData.map((row) => +row.GDP);
             rangeTop = 1.1*Math.max(...chosenFactor);
             rangeBot = 0;
-        }
-        else if (factor === "Life") {
+        } else if (factor === "Life") {
             chosenFactor = yearCsvData.map((row) => +row.Life);
             rangeTop = 1.1*Math.max(...chosenFactor);
             rangeBot = 0;
-        }
-        else if (factor === "Freedom") {
+        } else if (factor === "Freedom") {
             chosenFactor = yearCsvData.map((row) => +row.Freedom);
             rangeTop = 1.1*Math.max(...chosenFactor);
             rangeBot = 0;
-        }
-        else if (factor === "Generosity") {
+        } else if (factor === "Generosity") {
             chosenFactor = yearCsvData.map((row) => +row.Generosity);
             rangeTop = 1.1*Math.max(...chosenFactor);
             rangeBot = 0;
-        }
-        else if (factor === "Corruption") {
+        } else if (factor === "Corruption") {
             chosenFactor = yearCsvData.map((row) => +row.Corruption);
             rangeTop = 1.1*Math.max(...chosenFactor);
             rangeBot = 0;
@@ -61,7 +56,7 @@ function HappinessArray(csvData){
         }};
 
         const animateLine = {
-            data: [{ y: prevLine }, { y: chosenFactor }], 
+            data: [{ y: chosenFactor }], 
             color: "rgb(49,49,49)",
             traces: [0],
         };
@@ -72,8 +67,6 @@ function HappinessArray(csvData){
 
 		Plotly.animate(datavisEl, animateLayout, animationOptions);
 		setTimeout(() => Plotly.animate(datavisEl, animateLine, animationOptions), 550);
-        prevLine = chosenFactor;
-        return prevLine;
     }
 
     function setInitialPlot (year) {
