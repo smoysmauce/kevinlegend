@@ -14,18 +14,18 @@ var rangeTop;
 Plotly.d3.csv("HappinessDataset.csv", HappinessArray);
 
 function HappinessArray(csvData){
-
     const continentColours = csvData.map((row) => row.Continent);
-    // runs when called
-    function setPlot(factor, initialPlot) {
 
+    // runs when called
+    function setPlot(factor, year) {
         const chosenYear = csvData.map((row) => row.Country);
         var yearCsvData = csvData.filter( data => 
-            data.Year === slider.value.toString());
+            data.Year === year.toString());
         var chosenFactor;
+
         if (factor === "Rank") {
             chosenFactor = yearCsvData.map((row) => +row.Rank);
-            rangeTop = 0;
+            rangeTop = 150;
         }
         else if (factor === "GDP") {
             chosenFactor = yearCsvData.map((row) => +row.GDP);
@@ -47,71 +47,20 @@ function HappinessArray(csvData){
             chosenFactor = yearCsvData.map((row) => +row.Corruption);
             rangeTop = 0.5;
         }
-
-        // sets up the first graph
-        if (initialPlot) {
-            const trace = {
-                x: chosenYear,
-                y: chosenFactor,
-                type: "scatter",
-                mode: 'lines+markers',
-                marker: {
-                    size: 12,
-                    opacity: 0.5,
-                    color: continentColours.map((Continent) => {
-                        if (Continent === "Oceania") {
-                            return "#335C67";
-                        } else if (Continent === "Europe") {
-                            return "#ff1654";
-                        } else if (Continent === "North America") {
-                            return "#e09f3e";
-                        } else if (Continent === "South America") {
-                            return "#9e2a2b";
-                        } else if (Continent === "Asia") {
-                            return "#540b0e";
-                        } else if (Continent === "Africa") {
-                            return "#245501";
-                        }
-                    }),
-                },
-                line: {
-                    simplify: false,
-                    colour: "white",
-                },
-                name: 'Visualisation',
-            };
-
-            const data = [trace];
-
-            const layout = {
-                title: 'please work',
-            };
-
-            Plotly.newPlot(datavisEl,data,layout);
-            return;
-        };
         
-        const animateLayout = {
-            layout: {
-                title: `plssss`,
-                yaxis: { range: [rangeBot, rangeTop]},
-            },
-        };
+        const animateLayout = { layout: {
+            title: factor,
+            yaxis: { range: [rangeBot, rangeTop]},
+        }};
 
         const animateLine = {
-            data: [ {
-                x: chosenYear,
-                y: chosenFactor,
-            }, ], 
+            data: [{ x: chosenYear, y: chosenFactor, }], 
             colour: "white",
             traces: [0],
         };
 
 		const animationOptions = {
-			transition: {
-				easing: "cubic-in-out",
-				duration: 500,
-			},
+			transition: {easing: "cubic-in-out", duration: 500}
 		};
 
 		Plotly.animate(datavisEl, animateLayout, animationOptions);
@@ -119,30 +68,81 @@ function HappinessArray(csvData){
 		setTimeout(() => Plotly.animate(datavisEl, animateLine, animationOptions), 550);
     }
 
+    function setInitialPlot () {
+        var yearCsvData = csvData.filter( data => 
+            data.Year === slider.value.toString());
+        const trace = {
+            x: csvData.map((row) => row.Country),
+            y: yearCsvData.map((row) => +row.Rank),
+            type: "scatter",
+            mode: 'lines+markers',
+            marker: {
+                size: 12,
+                opacity: 0.5,
+                color: continentColours.map((Continent) => {
+                    if (Continent === "Oceania") {
+                        return "#335C67";
+                    } else if (Continent === "Europe") {
+                        return "#ff1654";
+                    } else if (Continent === "North America") {
+                        return "#e09f3e";
+                    } else if (Continent === "South America") {
+                        return "#9e2a2b";
+                    } else if (Continent === "Asia") {
+                        return "#540b0e";
+                    } else if (Continent === "Africa") {
+                        return "#245501";
+                    }
+                }),
+            },
+            line: {
+                simplify: false,
+                colour: "white",
+            },
+            name: 'Visualisation',
+        };
+
+        const data = [trace];
+
+        const layout = { title: 'please work' };
+
+        Plotly.newPlot(datavisEl,data,layout);
+    }
+
     //runs it back here
     RankB.addEventListener("click", function () {
-        setPlot("Rank", false);
+        factor = "Rank";
+        setPlot(factor, slider.value);
     });
     
     GDPB.addEventListener("click", function () {
-        setPlot("GDP", false);
+        factor = "GDP";
+        setPlot(factor, slider.value);
     });
 
     LifeB.addEventListener("click", function () {
-        setPlot("Life", false);
+        factor = "Life";
+        setPlot(factor, slider.value);
     });
 
     FreedomB.addEventListener("click", function () {
-        setPlot("Freedom", false);
+        factor = "Freedom"
+        setPlot(factor, slider.value);
     });
 
     GenerosityB.addEventListener("click", function () {
-        setPlot("Generosity", false);
+        factor = "Generosity";
+        setPlot(factor, slider.value);
     });
 
     CorruptionB.addEventListener("click", function () {
-        setPlot("Corruption", false);
+        factor = "Corruption";
+        setPlot(factor, slider.value);
     });
 
-    setPlot("Rank", true);
+    slider.addEventListener("change", function () {
+        setPlot(factor, slider.value)
+    })
+
+    setInitialPlot();
 }
