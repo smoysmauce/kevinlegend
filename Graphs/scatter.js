@@ -8,7 +8,7 @@ const CorruptionB = document.getElementById("CorruptionID");
 const slider = document.getElementById("slider");
 
 var factor = "Rank";
-var rangeBot = 0;
+var rangeBot;
 var rangeTop;
 
 Plotly.d3.csv("HappinessDataset.csv", HappinessArray);
@@ -24,36 +24,46 @@ function HappinessArray(csvData){
 
         if (factor === "Rank") {
             chosenFactor = yearCsvData.map((row) => +row.Rank);
-            rangeTop = 150;
+            rangeTop = 0;
+            rangeBot = 150;
+            console.log()
         }
         else if (factor === "GDP") {
             chosenFactor = yearCsvData.map((row) => +row.GDP);
             rangeTop = 1.8;
+            rangeBot = 0;
         }
         else if (factor === "Life") {
             chosenFactor = yearCsvData.map((row) => +row.Life);
             rangeTop = 1.3;
+            rangeBot = 0;
         }
         else if (factor === "Freedom") {
             chosenFactor = yearCsvData.map((row) => +row.Freedom);
             rangeTop = 0.65;
+            rangeBot = 0;
         }
         else if (factor === "Generosity") {
             chosenFactor = yearCsvData.map((row) => +row.Generosity);
             rangeTop = 0.6;
+            rangeBot = 0;
         }
         else if (factor === "Corruption") {
             chosenFactor = yearCsvData.map((row) => +row.Corruption);
             rangeTop = 0.5;
+            rangeBot = 0;
         }
         
         const animateLayout = { layout: {
             title: factor,
-            yaxis: { range: [rangeBot, rangeTop]},
+            yaxis: { range: [rangeBot, rangeTop]}
         }};
 
         const animateLine = {
-            data: [{ x: chosenYear, y: chosenFactor, }], 
+            data: [{ 
+               // x: chosenYear, 
+                y: chosenFactor, 
+            }], 
             colour: "white",
             traces: [0],
         };
@@ -69,8 +79,9 @@ function HappinessArray(csvData){
     function setInitialPlot (year) {
         var yearCsvData = csvData.filter( data => 
             data.Year === year.toString());
+
         const trace = {
-            x: yearCsvData.map((row) => row.Country),
+            //x: yearCsvData.map((row) => row.Country),
             y: yearCsvData.map((row) => +row.Rank),
             type: "scatter",
             mode: 'lines+markers',
@@ -101,7 +112,10 @@ function HappinessArray(csvData){
         };
 
         const data = [trace];
-        const layout = { title: 'Rank' };
+        const layout = { 
+            yaxis: {range: [150, 0]},
+            title: 'Rank' 
+        };
 
         Plotly.newPlot(datavisEl,data,layout);
     }
@@ -139,7 +153,7 @@ function HappinessArray(csvData){
 
     slider.addEventListener("change", function () {
         setPlot(factor, slider.value)
-    })
+    });
 
     setInitialPlot(slider.value);
 }
