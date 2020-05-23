@@ -1,58 +1,54 @@
 const datavisEl = document.getElementById("datavis");
-
-//buttons, gotta switch to dropdown probs
 const RankB = document.getElementById("RankID");
 const GDPB = document.getElementById("GDPID");
 const LifeB = document.getElementById("LifeID");
 const FreedomB = document.getElementById("FreedomID");
 const GenerosityB = document.getElementById("GenerosityID");
 const CorruptionB = document.getElementById("CorruptionID");
+const slider = document.getElementById("slider");
 
-var SWITCH = 1;
-var rangeBOT
-var rangeTOP
-
+var factor = "Rank";
+var rangeBot = 0;
+var rangeTop;
 
 Plotly.d3.csv("HappinessDataset.csv", HappinessArray);
 
 function HappinessArray(csvData){
-    const continentColours = csvData.map((row) => row.Continent);
-    //runs when called
-    function setPlot(SWITCH, initialPlot) {
-        if (SWITCH == 1) {
-            selection = csvData.map((row) => +row.Rank);
-            rangeTOP = 0;
-            rangeBOT = 156;
-        }
-        else if (SWITCH == 2) {
-            selection = csvData.map((row) => +row.GDP);
-            rangeTOP = 1.8;
-            rangeBOT = 0;
-        }
-        else if (SWITCH == 3) {
-            selection = csvData.map((row) => +row.Life);
-            rangeTOP = 1.3;
-            rangeBOT = 0;
-        }
-        else if (SWITCH == 4) {
-            selection = csvData.map((row) => +row.Freedom);
-            rangeTOP = 0.65;
-            rangeBOT = 0;
-        }
-        else if (SWITCH == 5) {
-            selection = csvData.map((row) => +row.Generosity);
-            rangeTOP = 0.6;
-            rangeBOT = 0;
-        }
-        else if (SWITCH == 6) {
-            selection = csvData.map((row) => +row.Corruption);
-            rangeTOP = 0.5;
-            rangeBOT = 0;
-        }
-        const chosenYear = csvData.map((row) => row.Country);
-        var chosenFactor = selection;
 
-        //SETS UP THE FIRST GRAPH
+    const continentColours = csvData.map((row) => row.Continent);
+    // runs when called
+    function setPlot(factor, initialPlot) {
+
+        const chosenYear = csvData.map((row) => row.Country);
+        var yearCsvData = csvData.filter( data => 
+            data.Year === slider.value.toString());
+        var chosenFactor;
+        if (factor === "Rank") {
+            chosenFactor = yearCsvData.map((row) => +row.Rank);
+            rangeTop = 0;
+        }
+        else if (factor === "GDP") {
+            chosenFactor = yearCsvData.map((row) => +row.GDP);
+            rangeTop = 1.8;
+        }
+        else if (factor === "Life") {
+            chosenFactor = yearCsvData.map((row) => +row.Life);
+            rangeTop = 1.3;
+        }
+        else if (factor === "Freedom") {
+            chosenFactor = yearCsvData.map((row) => +row.Freedom);
+            rangeTop = 0.65;
+        }
+        else if (factor === "Generosity") {
+            chosenFactor = yearCsvData.map((row) => +row.Generosity);
+            rangeTop = 0.6;
+        }
+        else if (factor === "Corruption") {
+            chosenFactor = yearCsvData.map((row) => +row.Corruption);
+            rangeTop = 0.5;
+        }
+
+        // sets up the first graph
         if (initialPlot) {
             const trace = {
                 x: chosenYear,
@@ -65,20 +61,15 @@ function HappinessArray(csvData){
                     color: continentColours.map((Continent) => {
                         if (Continent === "Oceania") {
                             return "#335C67";
-                        }
-                        else if (Continent === "Europe") {
+                        } else if (Continent === "Europe") {
                             return "#ff1654";
-                        }
-                        else if (Continent === "North America") {
+                        } else if (Continent === "North America") {
                             return "#e09f3e";
-                        }
-                        else if (Continent === "South America") {
+                        } else if (Continent === "South America") {
                             return "#9e2a2b";
-                        }
-                        else if (Continent === "Asia") {
+                        } else if (Continent === "Asia") {
                             return "#540b0e";
-                        }
-                        else if (Continent === "Africa") {
+                        } else if (Continent === "Africa") {
                             return "#245501";
                         }
                     }),
@@ -101,22 +92,20 @@ function HappinessArray(csvData){
         };
         
         const animateLayout = {
-			layout: {
+            layout: {
                 title: `plssss`,
-                yaxis: { range: [rangeBOT, rangeTOP]},
+                yaxis: { range: [rangeBot, rangeTop]},
             },
-		};
+        };
 
-		const animateLine = {
-			data: [
-				{
-					x: chosenYear,
-					y: chosenFactor,
-				},
-            ],
+        const animateLine = {
+            data: [ {
+                x: chosenYear,
+                y: chosenFactor,
+            }, ], 
             colour: "white",
-			traces: [0],
-		};
+            traces: [0],
+        };
 
 		const animationOptions = {
 			transition: {
@@ -132,41 +121,28 @@ function HappinessArray(csvData){
 
     //runs it back here
     RankB.addEventListener("click", function () {
-        SWITCH = 1;
-        setPlot(SWITCH, false);
-        console.log(selection)
+        setPlot("Rank", false);
     });
     
     GDPB.addEventListener("click", function () {
-        SWITCH = 2;
-        setPlot(SWITCH, false);
-        console.log(selection)
+        setPlot("GDP", false);
     });
 
     LifeB.addEventListener("click", function () {
-        SWITCH = 3;
-        setPlot(SWITCH, false);
-        console.log(selection)
+        setPlot("Life", false);
     });
 
     FreedomB.addEventListener("click", function () {
-        SWITCH = 4;
-        setPlot(SWITCH, false);
-        console.log(selection)
+        setPlot("Freedom", false);
     });
 
     GenerosityB.addEventListener("click", function () {
-        SWITCH = 5;
-        setPlot(SWITCH, false);
-        console.log(selection)
+        setPlot("Generosity", false);
     });
 
     CorruptionB.addEventListener("click", function () {
-        SWITCH = 6;
-        setPlot(SWITCH, false);
-        console.log(selection)
+        setPlot("Corruption", false);
     });
 
-    setPlot(SWITCH, true);
+    setPlot("Rank", true);
 }
-
