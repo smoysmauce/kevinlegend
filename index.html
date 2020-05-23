@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happiness</title>
+    <link rel="stylesheet" href="css/style.css">
     <script src="plotly-latest.min.js"></script>
     <script src="Graphs/scatter.js" defer></script>
 </head>
 <body>
-    <input type="range" min="2015" max="2019"
-      id="slider">
-    <button id="RankID">Rank</button>
-    <button id="GDPID">GDP</button>
-    <button id="LifeID">Life</button>
-    <button id="FreedomID">Freedom</button>
-    <button id="GenerosityID">Generosity</button>
-    <button id="CorruptionID">Corruption</button>
+    <h1>DEC03200</h1>
+    <h1>The Makings of a Happy Country</h1>
+    <p>Lorem ipsum text </p>
+    <div class="row">
+        <input type="range" min="2015" max="2019" id="slider">
+        <div class="row buttons">
+            <button id="RankID">Rank</button>
+            <button id="GDPID">GDP</button>
+            <button id="LifeID">Life</button>
+            <button id="FreedomID">Freedom</button>
+            <button id="GenerosityID">Generosity</button>
+            <button id="CorruptionID">Corruption</button>
+        </div>
+    </div>
     <div id="datavis"></div>
 </body>
 </html>

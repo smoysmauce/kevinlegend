@@ -66,7 +66,7 @@ function HappinessArray(csvData){
 		};
 
 		Plotly.animate(datavisEl, animateLayout, animationOptions);
-		setTimeout(() => Plotly.animate(datavisEl, animateLine, animationOptions), 550);
+		setTimeout(() => Plotly.animate(datavisEl, animateLine, animationOptions), 1000);
     }
 
     function setInitialPlot (year) {
