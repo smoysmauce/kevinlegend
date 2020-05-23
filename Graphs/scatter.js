@@ -18,9 +18,8 @@ function HappinessArray(csvData){
 
     // runs when called
     function setPlot(factor, year) {
-        const chosenYear = csvData.map((row) => row.Country);
-        var yearCsvData = csvData.filter( data => 
-            data.Year === year.toString());
+        var yearCsvData = csvData.filter( data => data.Year === year.toString());
+        const chosenYear = yearCsvData.map((row) => row.Country);
         var chosenFactor;
 
         if (factor === "Rank") {
@@ -64,15 +63,14 @@ function HappinessArray(csvData){
 		};
 
 		Plotly.animate(datavisEl, animateLayout, animationOptions);
-
 		setTimeout(() => Plotly.animate(datavisEl, animateLine, animationOptions), 550);
     }
 
-    function setInitialPlot () {
+    function setInitialPlot (year) {
         var yearCsvData = csvData.filter( data => 
-            data.Year === slider.value.toString());
+            data.Year === year.toString());
         const trace = {
-            x: csvData.map((row) => row.Country),
+            x: yearCsvData.map((row) => row.Country),
             y: yearCsvData.map((row) => +row.Rank),
             type: "scatter",
             mode: 'lines+markers',
@@ -103,8 +101,7 @@ function HappinessArray(csvData){
         };
 
         const data = [trace];
-
-        const layout = { title: 'please work' };
+        const layout = { title: 'Rank' };
 
         Plotly.newPlot(datavisEl,data,layout);
     }
@@ -144,5 +141,5 @@ function HappinessArray(csvData){
         setPlot(factor, slider.value)
     })
 
-    setInitialPlot();
+    setInitialPlot(slider.value);
 }
