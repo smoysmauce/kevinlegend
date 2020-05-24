@@ -13,17 +13,19 @@ var rangeTop;
 var prevLine;
 slider.value = 2017;
 
-Plotly.d3.csv("Happiness.csv", HappinessArray);
+Plotly.d3.csv("HappinessDataset.csv", HappinessArray);
 
 function HappinessArray(csvData){
-    const continentColours = csvData.map((row) => row.Continent);
-    //const year2019 = Array.from(new Set(csvData.map((row) => row.Country)));
     // runs when called
     function setPlot(factor, year) {
         //TAKES ALL THE ROWS OF THAT YEAR
         var yearCsvData = csvData.filter( data => data.Year === year.toString());
-        var chosenFactor;
         var chosenYear = yearCsvData.map((row) => row.Country);
+        const continentColours = yearCsvData.map((row) => row.Continent);
+        var chosenFactor;
+        console.log("Set plots");
+        console.log(yearCsvData);
+        console.log(continentColours);
 
         if (factor === "Rank") {
             chosenFactor = yearCsvData.map((row) => +row.Rank);
@@ -68,6 +70,11 @@ function HappinessArray(csvData){
             data: [{ 
                 y: chosenFactor,
                 x: chosenYear,
+            }], 
+            color: "rgb(49,49,49)",
+            traces: [0],
+            marker: { 
+                size: 12,
                 color: continentColours.map((Continent) => {
                     if (Continent === "Oceania") {
                         return "#72DD98";
@@ -84,9 +91,6 @@ function HappinessArray(csvData){
                     }
                 }),
             }
-        ], 
-            color: "rgb(49,49,49)",
-            traces: [0],
         };
 
 		const animationOptions = {
@@ -100,7 +104,10 @@ function HappinessArray(csvData){
     //SETS FIRST PLOT
     function setInitialPlot (year) {
         var yearCsvData = csvData.filter( data => data.Year === year.toString());
-        console.log(yearCsvData.map((row) => row.Country));
+        const continentColours = yearCsvData.map((row) => row.Continent);
+        console.log("Initial");
+        console.log(yearCsvData);
+        console.log(continentColours);
         const trace = {
             x: yearCsvData.map((row) => row.Country),
             y: yearCsvData.map((row) => +row.Rank),
