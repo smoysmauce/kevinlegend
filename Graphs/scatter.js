@@ -11,21 +11,23 @@ var factor = "Rank";
 var rangeBot;
 var rangeTop;
 var prevLine;
+slider.value = 2017;
 
-Plotly.d3.csv("HappinessDataset.csv", HappinessArray);
+Plotly.d3.csv("Happiness.csv", HappinessArray);
 
 function HappinessArray(csvData){
     const continentColours = csvData.map((row) => row.Continent);
-
+    //const year2019 = Array.from(new Set(csvData.map((row) => row.Country)));
     // runs when called
     function setPlot(factor, year) {
+        //TAKES ALL THE ROWS OF THAT YEAR
         var yearCsvData = csvData.filter( data => data.Year === year.toString());
-        //const chosenYear = yearCsvData.map((row) => row.Country);
         var chosenFactor;
+        var chosenYear = yearCsvData.map((row) => row.Country);
 
         if (factor === "Rank") {
             chosenFactor = yearCsvData.map((row) => +row.Rank);
-            rangeTop = 0;
+            rangeTop = -10;
             rangeBot = 1.1*Math.max(...chosenFactor);
         } else if (factor === "GDP") {
             chosenFactor = yearCsvData.map((row) => +row.GDP);
@@ -48,15 +50,41 @@ function HappinessArray(csvData){
             rangeTop = 1.1*Math.max(...chosenFactor);
             rangeBot = 0;
         }
-        //console.log(chosenFactor)
+
         
         const animateLayout = { layout: {
-            title: factor,
-            yaxis: { range: [rangeBot, rangeTop]}
+            yaxis: { 
+                range: [rangeBot, rangeTop],
+                zeroline: false,
+                color: defaultStatus,
+            },
+            xaxis: {
+                color: "#FFFCF6",
+                zeroline: false,
+            },
         }};
 
         const animateLine = {
-            data: [{ y: chosenFactor }], 
+            data: [{ 
+                y: chosenFactor,
+                x: chosenYear,
+                color: continentColours.map((Continent) => {
+                    if (Continent === "Oceania") {
+                        return "#72DD98";
+                    } else if (Continent === "Europe") {
+                        return "#8BE3FF";
+                    } else if (Continent === "North America") {
+                        return "#FFE36F";
+                    } else if (Continent === "South America") {
+                        return "#729298";
+                    } else if (Continent === "Asia") {
+                        return "#C03240";
+                    } else if (Continent === "Africa") {
+                        return "#5383B5";
+                    }
+                }),
+            }
+        ], 
             color: "rgb(49,49,49)",
             traces: [0],
         };
@@ -69,44 +97,54 @@ function HappinessArray(csvData){
 		setTimeout(() => Plotly.animate(datavisEl, animateLine, animationOptions), 1000);
     }
 
+    //SETS FIRST PLOT
     function setInitialPlot (year) {
-        var yearCsvData = csvData.filter( data => 
-            data.Year === year.toString());
-
+        var yearCsvData = csvData.filter( data => data.Year === year.toString());
+        console.log(yearCsvData.map((row) => row.Country));
         const trace = {
+            x: yearCsvData.map((row) => row.Country),
             y: yearCsvData.map((row) => +row.Rank),
             type: "scatter",
             mode: 'lines+markers',
             marker: {
                 size: 12,
-                opacity: 0.5,
                 color: continentColours.map((Continent) => {
                     if (Continent === "Oceania") {
-                        return "#335C67";
+                        return "#72DD98";
                     } else if (Continent === "Europe") {
-                        return "#ff1654";
+                        return "#8BE3FF";
                     } else if (Continent === "North America") {
-                        return "#e09f3e";
+                        return "#FFE36F";
                     } else if (Continent === "South America") {
-                        return "#9e2a2b";
+                        return "#729298";
                     } else if (Continent === "Asia") {
-                        return "#540b0e";
+                        return "#C03240";
                     } else if (Continent === "Africa") {
-                        return "#245501";
+                        return "#5383B5";
                     }
                 }),
             },
             line: {
                 simplify: false,
-                color: "rgb(49,49,49)",
+                color: "#999999",
             },
+            
             name: 'Visualisation',
         };
 
         const data = [trace];
         const layout = { 
-            yaxis: {range: [150, 0]},
-            title: 'Rank' 
+            yaxis: {
+                range: [150, -10],
+                zeroline: false,
+                color: "#C1A481",
+            },
+            xaxis: {
+                color: "#FFFCF6",
+                zeroline: false,
+            },
+            paper_bgcolor: "#FFFCF6",
+            plot_bgcolor: "#FFFCF6",
         };
 
         Plotly.newPlot(datavisEl,data,layout);
@@ -120,11 +158,17 @@ function HappinessArray(csvData){
     
     GDPB.addEventListener("click", function () {
         factor = "GDP";
+        var image = document.getElementById('infoBox');
+        image.src = "1x/GDP.png";
+        var colour = document.getElementById('GDPID');
+        color ="$4E4C53";
         setPlot(factor, slider.value);
     });
 
     LifeB.addEventListener("click", function () {
         factor = "Life";
+        var image = document.getElementById('infoBox');
+        image.src = "1x/Life.png";
         setPlot(factor, slider.value);
     });
 
@@ -148,4 +192,7 @@ function HappinessArray(csvData){
     });
 
     setInitialPlot(slider.value);
+    function changeImage() {
+        
+    }
 }

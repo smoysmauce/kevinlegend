@@ -9,20 +9,49 @@
     <script src="Graphs/scatter.js" defer></script>
 </head>
 <body>
-    <h1>DEC03200</h1>
-    <h1>The Makings of a Happy Country</h1>
-    <p>Lorem ipsum text </p>
+    <div style="height: 20px;"></div>
     <div class="row">
-        <input type="range" min="2015" max="2019" id="slider">
-        <div class="row buttons">
-            <button id="RankID">Rank</button>
-            <button id="GDPID">GDP</button>
-            <button id="LifeID">Life</button>
-            <button id="FreedomID">Freedom</button>
-            <button id="GenerosityID">Generosity</button>
-            <button id="CorruptionID">Corruption</button>
+        <div style="width: 10%"></div>
+        <div style="width: 25%">
+            <h2>DECO3100</h2>
+            <h1>The Makings of a Happy Country</h1>
+            <p>Have some text hereLorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi Lorem ipsum dolor sit amet, consec </p>
+        </div>
+        <div style="width: 20%"></div>
+        <div style="width: 40%; ">
+            <img src="1x/GDP.png" id="infoBox" alt="GDPExp">
+        </div>"
+    </div>
+    <div class="space">
+        <p> </p>
+    </div>
+    <div class="row">
+        <div style="width: 10%"></div>
+        <div style="width: 30%">
+            <input type="range" min="2015" max="2019" id="slider">
+        </div>
+        <div style="width: 5%"></div>
+        <div style="width: 44%">
+            <button class="btn" id="RankID">Rank</button>
+            <button class="btn" id="GDPID"><b>GDP</b></button>
+            <button class="btn" id="LifeID">Life</button>
+            <button class="btn" id="FreedomID">Freedom</button>
+            <button class="btn" id="GenerosityID">Generosity</button>
+            <button class="btn" id="CorruptionID">Corruption</button>
         </div>
     </div>
     <div id="datavis"></div>
+    <div class="row">
+        <div style="width:5%;"></div>
+        <div style="width:20%;">
+            <p style="text-align: left; font-size: 30px;">Higher Happiness Rank</p>
+        </div>
+        <div style="width: 50%;">
+            <img src="1x/Legend 2.png"alt="Legend2">
+        </div>
+        <div style="width:20%;">
+            <p style="text-align: right; font-size: 30px;">Lower Happiness Rank</p>
+        </div>
+    </div>
 </body>
 </html>
